@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>भारत सरकारी योजनाएँ | Hindi Scheme Finder</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, "Noto Sans Devanagari",
+                   "Segoe UI", sans-serif;
+    }
+
+    body {
+      background: #f5f7fb;
+      color: #172033;
+    }
+
+    header {
+      background: linear-gradient(135deg, #ff7a00, #ff9933);
+      color: white;
+      padding: 28px 18px;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 30px;
+      margin-bottom: 8px;
+    }
+
+    header p {
+      opacity: .95;
+      font-size: 15px;
+    }
+
+    .container {
+      width: min(1100px, 94%);
+      margin: 25px auto;
+    }
+
+    .search-box {
+      background: white;
+      padding: 18px;
+      border-radius: 18px;
+      box-shadow: 0 8px 30px rgba(0,0,0,.08);
+      margin-bottom: 20px;
+    }
+
+    .search-row {
+      display: flex;
+      gap: 10px;
+    }
+
+    input, select {
+      width: 100%;
+      border: 1px solid #d9deea;
+      padding: 14px;
+      border-radius: 12px;
+      outline: none;
+      font-size: 15px;
+      background: white;
+    }
+
+    input:focus, select:focus {
+      border-color: #ff7a00;
+    }
+
+    button {
+      border: none;
+      cursor: pointer;
+      border-radius: 12px;
+      padding: 13px 18px;
+      font-weight: 700;
+      background: #ff7a00;
+      color: white;
+      font-size: 15px;
+    }
+
+    button:hover {
+      opacity: .9;
+    }
+
+    .categories {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .category {
+      background: #fff;
+      border: 1px solid #e2e6ef;
+      color: #263247;
+      padding: 13px 8px;
+      border-radius: 12px;
+      text-align: center;
+      cursor: pointer;
+      transition: .2s;
+    }
+
+    .category:hover,
+    .category.active {
+      background: #fff3e8;
+      border-color: #ff7a00;
+      color: #e85f00;
+    }
+
+    .section-title {
+      margin: 25px 0 12px;
+      font-size: 21px;
+    }
+
+    .schemes {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 15px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 18px;
+      padding: 20px;
+      box-shadow: 0 5px 20px rgba(0,0,0,.07);
+      border: 1px solid #edf0f5;
+    }
+
+    .card h3 {
+      color: #172033;
+      margin-bottom: 9px;
+      font-size: 18px;
+    }
+
+    .card p {
+      color: #626b7c;
+      line-height: 1.6;
+      font-size: 14px;
+    }
+
+    .tag {
+      display: inline-block;
+      margin: 10px 0;
+      padding: 5px 9px;
+      background: #eef5ff;
+      color: #2463b8;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .ai-box {
+      margin-top: 25px;
+      background: linear-gradient(135deg, #182848, #304b78);
+      color: white;
+      padding: 22px;
+      border-radius: 20px;
+    }
+
+    .ai-box h2 {
+      margin-bottom: 8px;
+    }
+
+    .ai-box p {
+      opacity: .9;
+      margin-bottom: 15px;
+      line-height: 1.6;
+    }
+
+    .ai-row {
+      display: flex;
+      gap: 10px;
+    }
+
+    .ai-row input {
+      flex: 1;
+    }
+
+    .ai-result {
+      margin-top: 18px;
+      background: white;
+      color: #172033;
+      padding: 18px;
+      border-radius: 14px;
+      line-height: 1.8;
+      white-space: pre-wrap;
+      display: none;
+    }
+
+    .loading {
+      display: none;
+      margin-top: 12px;
+    }
+
+    .notice {
+      background: #fff8e6;
+      border-left: 4px solid #ffb000;
+      padding: 14px;
+      margin-top: 20px;
+      border-radius: 8px;
+      line-height: 1.6;
+      font-size: 14px;
+    }
+
+    footer {
+      margin-top: 40px;
+      padding: 25px;
+      text-align: center;
+      background: #172033;
+      color: #dbe2ef;
+      font-size: 13px;
+    }
+
+    footer a {
+      color: #ffb36b;
+      text-decoration: none;
+    }
+
+    @media(max-width: 650px) {
+      header h1 {
+        font-size: 24px;
+      }
+
+      .search-row,
+      .ai-row {
+        flex-direction: column;
+      }
+
+      button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>🇮🇳 भारत सरकारी योजनाएँ</h1>
+  <p>सरकारी योजनाओं को आसान हिंदी में खोजें और समझें</p>
+</header>
+
+<div class="container">
+
+  <div class="search-box">
+
+    <div class="search-row">
+      <input
+        id="searchInput"
+        type="text"
+        placeholder="योजना खोजें... जैसे छात्र, किसान, महिला, रोजगार"
+        oninput="searchSchemes()"
+      >
+
+      <button onclick="searchSchemes()">🔍 खोजें</button>
+    </div>
+
+    <div class="categories">
+      <div class="category active" onclick="filterCategory('सभी', this)">
+        सभी
+      </div>
+
+      <div class="category" onclick="filterCategory('शिक्षा', this)">
+        🎓 शिक्षा
+      </div>
+
+      <div class="category" onclick="filterCategory('कृषि', this)">
+        🌾 कृषि
+      </div>
+
+      <div class="category" onclick="filterCategory('महिला', this)">
+        👩 महिला
+      </div>
+
+      <div class="category" onclick="filterCategory('स्वास्थ्य', this)">
+        🏥 स्वास्थ्य
+      </div>
+
+      <div class="category" onclick="filterCategory('रोजगार', this)">
+        💼 रोजगार
+      </div>
+    </div>
+
+  </div>
+
+  <h2 class="section-title">⭐ प्रमुख योजनाएँ</h2>
+
+  <div id="schemeList" class="schemes"></div>
+
+  <div class="ai-box">
+
+    <h2>🤖 AI योजना सहायक</h2>
+
+    <p>
+      अपनी जरूरत लिखें। Groq AI आपको आसान हिंदी में संबंधित
+      सरकारी योजना की जानकारी समझाने की कोशिश करेगा।
+    </p>
+
+    <div class="ai-row">
+
+      <input
+        id="aiQuestion"
+        type="text"
+        placeholder="उदाहरण: मैं छात्र हूँ, मेरे लिए कौन सी योजना है?"
+      >
+
+      <button onclick="askAI()">AI से पूछें</button>
+
+    </div>
+
+    <div id="loading" class="loading">
+      ⏳ जानकारी तैयार हो रही है...
+    </div>
+
+    <div id="aiResult" class="ai-result"></div>
+
+  </div>
+
+  <div class="notice">
+    ⚠️ <b>महत्वपूर्ण:</b> AI द्वारा दी गई जानकारी को अंतिम सरकारी सलाह न मानें।
+    पात्रता, लाभ और आवेदन की वर्तमान जानकारी के लिए संबंधित सरकारी पोर्टल
+    जरूर देखें।
+  </div>
+
+</div>
+
+<footer>
+  <p>🇮🇳 भारत सरकारी योजनाएँ</p>
+  <p style="margin-top:8px;">
+    आधिकारिक योजना जानकारी के लिए
+    <a href="https://www.myscheme.gov.in/hi"
+       target="_blank"
+       rel="noopener">
+       myScheme.gov.in
+    </a>
+    देखें।
+  </p>
+</footer>
+
+
+<script>
+
+  /*
+   ==========================================================
+   GROQ API SETTINGS
+   ==========================================================
+
+   IMPORTANT:
+   Public GitHub Pages website में API key डालना सुरक्षित नहीं है।
+
+   Testing के लिए अपनी key नीचे डाल सकते हैं।
+
+   Production website के लिए backend/serverless proxy इस्तेमाल करें.
+  */
+
+  const GROQ_API_KEY = "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";
+
+  // Current Groq production model
+  const GROQ_MODEL = "openai/gpt-oss-120b";
+
+
+  /*
+   ==========================================================
+   DEMO SCHEMES
+   ==========================================================
+  */
+
+  const schemes = [
+
+    {
+      name: "प्रधानमंत्री किसान सम्मान निधि",
+      category: "कृषि",
+      description:
+        "पात्र किसानों को कृषि संबंधी जरूरतों के लिए आर्थिक सहायता प्रदान करने वाली केंद्र सरकार की योजना।"
+    },
+
+    {
+      name: "प्रधानमंत्री जन धन योजना",
+      category: "वित्त",
+      description:
+        "बैंकिंग सेवाओं से लोगों को जोड़ने और वित्तीय समावेशन को बढ़ावा देने की योजना।"
+    },
+
+    {
+      name: "आयुष्मान भारत",
+      category: "स्वास्थ्य",
+      description:
+        "पात्र परिवारों को स्वास्थ्य सेवाओं और उपचार से संबंधित सहायता उपलब्ध कराने वाली प्रमुख सरकारी पहल।"
+    },
+
+    {
+      name: "बेटी बचाओ बेटी पढ़ाओ",
+      category: "महिला",
+      description:
+        "बालिकाओं की सुरक्षा, शिक्षा और सशक्तिकरण को बढ़ावा देने की सरकारी पहल।"
+    },
+
+    {
+      name: "प्रधानमंत्री कौशल विकास योजना",
+      category: "रोजगार",
+      description:
+        "युवाओं को कौशल प्रशिक्षण और रोजगार से जुड़ी क्षमताओं को विकसित करने में सहायता देने वाली योजना।"
+    },
+
+    {
+      name: "राष्ट्रीय छात्रवृत्ति योजनाएँ",
+      category: "शिक्षा",
+      description:
+        "पात्र विद्यार्थियों के लिए विभिन्न छात्रवृत्ति अवसरों की जानकारी और सहायता।"
+    }
+
+  ];
+
+
+  let currentCategory = "सभी";
+
+
+  /*
+   ==========================================================
+   SHOW SCHEMES
+   ==========================================================
+  */
+
+  function showSchemes(list) {
+
+    const container = document.getElementById("schemeList");
+
+    if (!list.length) {
+
+      container.innerHTML = `
+        <div class="card">
+          <h3>कोई योजना नहीं मिली</h3>
+          <p>
+            दूसरा शब्द डालकर फिर से खोजें।
+          </p>
+        </div>
+      `;
+
+      return;
+    }
+
+
+    container.innerHTML = list.map(scheme => `
+
+      <div class="card">
+
+        <span class="tag">
+          ${scheme.category}
+        </span>
+
+        <h3>
+          ${scheme.name}
+        </h3>
+
+        <p>
+          ${scheme.description}
+        </p>
+
+      </div>
+
+    `).join("");
+
+  }
+
+
+  /*
+   ==========================================================
+   SEARCH
+   ==========================================================
+  */
+
+  function searchSchemes() {
+
+    const query =
+      document.getElementById("searchInput")
+      .value
+      .toLowerCase()
+      .trim();
+
+
+    let result = schemes.filter(scheme => {
+
+      const text =
+        scheme.name.toLowerCase() +
+        " " +
+        scheme.category.toLowerCase() +
+        " " +
+        scheme.description.toLowerCase();
+
+      return text.includes(query);
+
+    });
+
+
+    if (currentCategory !== "सभी") {
+
+      result = result.filter(
+        scheme => scheme.category === currentCategory
+      );
+
+    }
+
+
+    showSchemes(result);
+
+  }
+
+
+  /*
+   ==========================================================
+   CATEGORY FILTER
+   ==========================================================
+  */
+
+  function filterCategory(category, element) {
+
+    currentCategory = category;
+
+
+    document
+      .querySelectorAll(".category")
+      .forEach(item => item.classList.remove("active"));
+
+
+    element.classList.add("active");
+
+
+    searchSchemes();
+
+  }
+
+
+  /*
+   ==========================================================
+   GROQ AI
+   ==========================================================
+  */
+
+  async function askAI() {
+
+    const question =
+      document.getElementById("aiQuestion")
+      .value
+      .trim();
+
+
+    const resultBox =
+      document.getElementById("aiResult");
+
+    const loading =
+      document.getElementById("loading");
+
+
+    if (!question) {
+
+      alert("कृपया अपना सवाल लिखें।");
+
+      return;
+
+    }
+
+
+    if (
+      !GROQ_API_KEY ||
+      GROQ_API_KEY === "YOUR_GROQ_API_KEY_HERE"
+    ) {
+
+      resultBox.style.display = "block";
+
+      resultBox.textContent =
+        "पहले JavaScript में GROQ_API_KEY में अपनी Groq API key डालें।\n\n" +
+        "ध्यान रखें: public GitHub Pages पर API key रखना सुरक्षित नहीं है।";
+
+      return;
+
+    }
+
+
+    loading.style.display = "block";
+
+    resultBox.style.display = "none";
+
+
+    try {
+
+      const response = await fetch(
+        "https://api.groq.com/openai/v1/chat/completions",
+        {
+
+          method: "POST",
+
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + GROQ_API_KEY
+          },
+
+          body: JSON.stringify({
+
+            model: GROQ_MODEL,
+
+            messages: [
+
+              {
+                role: "system",
+
+                content: `
+आप भारत की सरकारी योजनाओं के हिंदी सहायक हैं।
+
+उत्तर केवल सरल हिंदी में दें।
+
+यदि योजना के बारे में निश्चित जानकारी उपलब्ध नहीं है,
+तो अनुमान लगाकर तथ्य न बनाएं।
+
+उत्तर में ये headings रखें:
+
+योजना का नाम
+किसके लिए
+मुख्य लाभ
+पात्रता
+जरूरी दस्तावेज
+आवेदन कैसे करें
+आधिकारिक वेबसाइट
+
+हमेशा उपयोगकर्ता को सलाह दें कि अंतिम जानकारी
+official government website से verify करें।
+
+किसी भी योजना की पात्रता या लाभ को बिना पुष्टि
+के निश्चित तथ्य की तरह प्रस्तुत न करें।
+`
+              },
+
+              {
+                role: "user",
+                content: question
+              }
+
+            ],
+
+            temperature: 0.2,
+
+            max_completion_tokens: 1200
+
+          })
+
+        }
+      );
+
+
+      const data = await response.json();
+
+
+      if (!response.ok) {
+
+        throw new Error(
+          data?.error?.message ||
+          "Groq API request failed"
+        );
+
+      }
+
+
+      const answer =
+        data?.choices?.[0]?.message?.content;
+
+
+      if (!answer) {
+
+        throw new Error(
+          "AI ने कोई उत्तर नहीं दिया।"
+        );
+
+      }
+
+
+      resultBox.textContent = answer;
+
+      resultBox.style.display = "block";
+
+
+    } catch (error) {
+
+      resultBox.style.display = "block";
+
+      resultBox.textContent =
+        "❌ समस्या हुई:\n\n" +
+        error.message +
+        "\n\nअपनी API key और इंटरनेट connection जांचें।";
+
+    }
+
+
+    loading.style.display = "none";
+
+  }
+
+
+  /*
+   ==========================================================
+   ENTER KEY
+   ==========================================================
+  */
+
+  document
+    .getElementById("aiQuestion")
+    .addEventListener("keydown", function(event) {
+
+      if (event.key === "Enter") {
+        askAI();
+      }
+
+    });
+
+
+  /*
+   ==========================================================
+   INITIAL LOAD
+   ==========================================================
+  */
+
+  showSchemes(schemes);
+
+</script>
+
+</body>
+</html>
